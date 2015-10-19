@@ -1,0 +1,10 @@
+
+%p
+  Finished.
+
+- if errors.present?
+  %p= errors
+- else
+  %h4 Results:
+  - reviews.each do |review|
+    %p= review

@@ -1,0 +1,15 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#get_product {
+  label {
+    display: block;
+    width: 100px;
+    float: left;
+  }
+
+  input, textarea {
+    width: 200px;
+  }
+}

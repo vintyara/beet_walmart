@@ -1,0 +1,17 @@
+#get_product
+  = form_tag get_product_path, id: 'get_url_form', remote: true do |f|
+    .product_id
+      = label_tag :product_id
+      = text_field_tag :product_id
+    .review_text
+      = label_tag :review_text
+      = text_area_tag :review_text
+
+    = submit_tag
+
+#results
+
+:coffee
+  $('#get_url_form').submit ->
+    $('#results').html("loading...")
+
