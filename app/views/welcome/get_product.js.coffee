@@ -1,1 +1,1 @@
-$('#results').html("<%= j render partial: 'results', locals: { reviews: @reviews, errors: @errors } %>")
+$('#results').html("<%= j render partial: 'results', locals: { result: @result } %>")

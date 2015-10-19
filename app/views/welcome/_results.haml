@@ -2,9 +2,9 @@
 %p
   Finished.
 
-- if errors.present?
-  %p= errors
+- if result[:error].present?
+  %p= result[:error]
 - else
   %h4 Results:
-  - reviews.each do |review|
+  - result[:reviews].each do |review|
     %p= review
