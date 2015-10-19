@@ -17,16 +17,26 @@ class WelcomeController < ApplicationController
         doc = Hpricot(response.body)
 
         # Try to get review pages count
-        doc_pagination    = doc.search("//div[@class='paginator-list pull-left js-questions-paginator-list']")
+        doc_pagination    = doc.search("//div[@class='review-pagination js-review-pagination hide-content display-inline-block-m']")
         last_review_page  = doc_pagination.search("//li").last.inner_text
 
         # Load all reviews
         1.upto(last_review_page.to_i) do |review_page_number|
-          api_url = "http://www.walmart.com/reviews/api/questions/#{params[:product_id]}?sort=totalAnswerCount&pageNumber=#{review_page_number}"
 
+
+          # It`s not a get reviews link :(
+          #api_url = "http://www.walmart.com/reviews/api/questions/#{params[:product_id]}?sort=totalAnswerCount&pageNumber=#{review_page_number}"
+
+          api_url = "http://www.walmart.com/reviews/api/product/#{params[:product_id]}?limit=5&page=#{review_page_number}&sort=helpful&filters=&showProduct=false"
+          puts "Fetching #{api_url}"
+
+          # Parse reviews HTML
           api_response = Net::HTTP.get(URI.parse(api_url))
-          result = JSON.parse(api_response)
-          @reviews.push result['questionDetails'].map{ |review_info| review_info['questionSummary'] }
+          ajax_doc = Hpricot(api_response)
+          @reviews.push ajax_doc.search("//p").select{ |r| r.attributes['class'].include?('js-customer-review-text\\')}.map{ |r| r.html }
+
+          #result = JSON.parse(api_response)
+          #@reviews.push result['questionDetails'].map{ |review_info| review_info['questionSummary'] }
         end
         @reviews.flatten!
 
